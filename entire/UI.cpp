@@ -41,10 +41,12 @@ void UI::start() {
 
 void UI::updatePrint() {
 	mvwprintw(UI::wnd, 1, WIDTH - 15, "Player: %d", *(UI::current_turn) + 1);
-	for (int i = 0; i < 5; i++) {
-		UI::printDice(UI::dice_array->getDice(i), i);
+	for (int i = 1; i < 6; i++) {
+		UI::printDice(UI::dice_array->getDice(i - 1), i);
 	}
 	UI::printChart();
+	UI::highlight();
+
 	wrefresh(UI::wnd);
 }
 
@@ -141,9 +143,10 @@ int UI::getUserInput() {
 	 case KEY_ENTER:
 	    return UI::select();
 	    break;
-	 case KEY_F(1):
+	 case KEY_BACKSPACE:
 	    return -1;
       }
+      UI::updatePrint();
    }while (true);
 }
 
@@ -169,14 +172,45 @@ void UI::move(int dir){
 	if((*UI::selectorRow) == 1){
 	   if((*UI::selectorCol) != 1 )
 	      (*UI::selectorCol) ++;
+	}else if((*UI::selectorRow) == 0){
+	   if((*UI::selectorCol) < 4)
+	      (*UI::selectorCol) ++;
 	}
-
-  } 
+	break;
+     case 2:
+	if((*UI::selectorRow) < 6){
+	   (*UI::selectorRow) ++;
+	   if((*UI::selectorCol) > 1)
+	      (*UI::selectorCol) = 1;
+	}
+	break;
+     case 3:
+	if((*UI::selectorRow) > 0){
+	   (*UI::selectorRow) --;
+	}
+	break;
+  }
+  UI::updatePrint(); 
 }
 
 int UI::select(){
-   
+   return 0;   
 }
+
+void UI::highlight(){
+  if((*UI::selectorRow) == 0){
+     for(int i = 0; i < 3; i ++){
+        mvchgat(8 + i, (*UI::selectorCol) * 5, 5, A_BLINK, 1, NULL);
+     }
+  }else if((*UI::selectorRow) >= 1){
+     if((*UI::selectorCol) == 0){
+        mvchgat(15 + (*UI::selectorRow), 18, 2, A_BLINK, 1, NULL);
+     }else if((*UI::selectorCol) == 1){
+        mvchgat(15 + (*UI::selectorRow), 43, 2, A_BLINK, 1, NULL);
+     }
+  }
+}
+
 void UI::end() {
    /*This will be used for something... I am sure*/
 }

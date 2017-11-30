@@ -30,5 +30,6 @@ public:
 	void printDice(int, int);
 	std::string playerValue(int);
 	void move(int);
-        int select();	
+        int select();
+        void highlight();	
 };

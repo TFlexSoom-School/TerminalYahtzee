@@ -23,5 +23,6 @@ public:
 	int getSum();
 	bool isPlayerFinished();
 	void reset();
+	void exit();
 };
 #endif

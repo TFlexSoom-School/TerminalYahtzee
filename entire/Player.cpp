@@ -62,3 +62,10 @@ void Player::reset() {
 		Player::scoreArray[i] = -1;
 	}
 }
+
+void Player::exit(){
+   for(int i = 0; i < 15; i ++){
+      Player::scoreArray[i] = 0;
+      *Player::finished = true;
+   }
+}
