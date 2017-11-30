@@ -14,6 +14,8 @@ private:
 	Dice * dice_array;
 	int * current_turn;
 	WINDOW * wnd;
+	int * selectorRow;
+	int * selectorCol;
 
 public:
 	UI(Player *,int *, Dice *, int *);
@@ -27,4 +29,6 @@ public:
 	void printChart();
 	void printDice(int, int);
 	std::string playerValue(int);
+	void move(int);
+        int select();	
 };

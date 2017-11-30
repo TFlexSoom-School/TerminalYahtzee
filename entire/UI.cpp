@@ -14,6 +14,10 @@ UI::UI(Player * player_array, int * numPlayers, Dice * dice_array, int * current
 	UI::numPlayers = numPlayers;
 	UI::dice_array = dice_array;
 	UI::current_turn = current_turn;
+	UI::selectorRow = new int;
+	UI::selectorCol = new int;
+	(*UI::selectorRow) = 0;
+	(*UI::selectorCol) = 0;
 	initscr();
 	noecho();
 	raw();
@@ -36,7 +40,7 @@ void UI::start() {
 }
 
 void UI::updatePrint() {
-	mvwprintw(UI::wnd, 0, WIDTH - 5, "Player: %d", UI::current_turn + 1);
+	mvwprintw(UI::wnd, 1, WIDTH - 15, "Player: %d", *(UI::current_turn) + 1);
 	for (int i = 0; i < 5; i++) {
 		UI::printDice(UI::dice_array->getDice(i), i);
 	}
@@ -99,13 +103,13 @@ void UI::printChart() {
 	mvwprintw(UI::wnd, 20, 1, "|     5s     |   %s    | 4 of a Kind  |   %s    |", UI::playerValue(4).c_str(), UI::playerValue(12).c_str());
 	mvwprintw(UI::wnd, 21, 1, "|     6s     |   %s    |    YAHTZEE   |   %s    |", UI::playerValue(5).c_str(), UI::playerValue(13).c_str());
 	mvwprintw(UI::wnd, 22, 1, "|   Bonus    |   %s    |Bonus Yahtzee |   %s    |", UI::playerValue(6).c_str(), UI::playerValue(14).c_str());
-	mvwprintw(UI::wnd, 23, 1, "|------------|---------|--------------|---------|");
+	mvwprintw(UI::wnd, 23, 1, "|------------|--------|--------------|--------|");
 }
 
 std::string UI::playerValue(int index) {
 	int score = UI::player_array[*UI::current_turn].getScore(index);
 	if (score == -1) {
-		return "-1";
+		return "0";
 	}
 	else {
 		return int_to_string(score);
@@ -114,15 +118,65 @@ std::string UI::playerValue(int index) {
 
 
 void UI::Error(std::string message) {
-	mvwprintw(UI::wnd, 100, 20, "%s", message.c_str());
-	wrefresh(UI::wnd);
+   mvwprintw(UI::wnd, 100, 20, "%s", message.c_str());
+   wrefresh(UI::wnd);
 }
 int UI::getUserInput() {
-
+   int c;
+   do{ 
+      c = wgetch(UI::wnd);
+      switch (c){
+	 case KEY_UP:
+	    UI::move(0);
+	    break;
+	 case KEY_RIGHT:
+	    UI::move(1);
+	    break;
+	 case KEY_DOWN:
+	    UI::move(2);
+	    break;
+	 case KEY_LEFT:
+	    UI::move(3);
+	    break;
+	 case KEY_ENTER:
+	    return UI::select();
+	    break;
+	 case KEY_F(1):
+	    return -1;
+      }
+   }while (true);
 }
-bool UI::playAgain() {
 
+bool UI::playAgain() {
+   /* Print Again???? */
+   int c;
+   do{
+      c = wgetch(UI::wnd);
+      if(c == KEY_F(1))
+	 return false;
+      if(c == KEY_ENTER)
+	 return true;
+   }while (true);
+}
+
+void UI::move(int dir){
+  switch(dir){
+     case 0:
+	if((*UI::selectorRow) > 0)
+	   (*UI::selectorRow) --;
+	break;
+     case 1:
+	if((*UI::selectorRow) == 1){
+	   if((*UI::selectorCol) != 1 )
+	      (*UI::selectorCol) ++;
+	}
+
+  } 
+}
+
+int UI::select(){
+   
 }
 void UI::end() {
-	/*This will be used for something... I am sure*/
+   /*This will be used for something... I am sure*/
 }
