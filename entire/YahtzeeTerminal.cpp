@@ -11,7 +11,7 @@ int extractInts(char[]);
 void Yahtzee(int);
 bool scoreOrReroll(Player *, Dice *, UI *);
 void startNewGame(Player *, int);
-void destroyGame(Player *, int, Dice *);
+void destroyGame(Player *, Dice *, UI *);
 bool playerStillPlaying(Player*);
 bool allPlayersScored(Player *, int);
 bool playAgain();
@@ -26,91 +26,87 @@ bool bonusYahtzee(Player *, Dice *);
 /* Main Method */
 
 int main(int argc, char * argv[]) {
-	if (argc == 2) {
-		int players = extractInts(argv[1]);
-		if (players > 0) {
-			srand(time(NULL));
-			Yahtzee(players);
-		}
-		else {
-			std::cout << "Invalid Argument" << std::endl;
-		}
-	}
-	else {
-		std::cout << "You Yahta zee kiddin me!" << std::endl;
-	}
+   if (argc == 2) {
+      int players = extractInts(argv[1]);
+      if (players > 0) {
+	 srand(time(NULL));
+	 Yahtzee(players);
+      }
+      else {
+	 std::cout << "Invalid Argument" << std::endl;
+      }
+   }
+   else {
+      std::cout << "You Yahta zee kiddin me!" << std::endl;
+   }
 
-	return 0;
+   return 0;
 }
 
 /*
-* extract_Ints(char str[])
-* Extracts ints from message
-* preconditions: values are defined.
-* postconditions: none
-* return: the ints
-*/
+ * extract_Ints(char str[])
+ * Extracts ints from message
+ * preconditions: values are defined.
+ * postconditions: none
+ * return: the ints
+ */
 int extractInts(char str[]) {
-	int returnValue = 0;
-	for (int i = 0; i < strlen(str); i++) {
-		if (str[i] >= '0' &&  str[i] <= '9') {
-			returnValue = returnValue * 10 + (str[i] - '0');
-		}
-		else {
-			return -1;
-		}
-	}
-	return returnValue;
+   int returnValue = 0;
+   for (int i = 0; i < strlen(str); i++) {
+      if (str[i] >= '0' &&  str[i] <= '9') {
+	 returnValue = returnValue * 10 + (str[i] - '0');
+      }
+      else {
+	 return -1;
+      }
+   }
+   return returnValue;
 }
 
 /*
-* Yahtzee(int players)
-* Main Runnable Method
-* preconditions: values is defined.
-* postconditions: none
-* return: nothing
-*/
+ * Yahtzee(int players)
+ * Main Runnable Method
+ * preconditions: values is defined.
+ * postconditions: none
+ * return: nothing
+ */
 void Yahtzee(int numPlayers) {
-	Player * players = new Player[numPlayers];
-	Dice * dice = new Dice();
-	int player = 0;
-	UI * ui = new UI(players, &numPlayers, dice, &player);
-	ui->start();
+   Player * players = new Player[numPlayers];
+   Dice * dice = new Dice();
+   int player = 0;
+   UI * ui = new UI(players, &numPlayers, dice, &player);
+   ui->start();
 
-	do {
-		startNewGame(players, numPlayers);
-		do {
-			if (playerStillPlaying(&players[player]))
-				do {
-					dice->rollDice();
-				} while (!scoreOrReroll(&players[player], dice, ui));
-				player += (player >= numPlayers - 1 ? -1 * player : 1);
-		} while (!(allPlayersScored(players, numPlayers)));
-	} while (ui->playAgain());
+   do {
+      startNewGame(players, numPlayers);
+      do {
+	 if (playerStillPlaying(&players[player]))
+	    do {
+	       dice->rollDice();
+	    } while (!scoreOrReroll(&players[player], dice, ui));
+	 player += (player >= numPlayers - 1 ? -1 * player : 1);
+      } while (!(allPlayersScored(players, numPlayers)));
+   } while (ui->playAgain());
 
-	destroyGame(players, numPlayers, dice);
+   destroyGame(players, dice, ui);
 
 }
 
 void startNewGame(Player * players, int numPlayers) {
-	for (int i = 0; i < numPlayers; i++) {
-		players[i].reset();
-	}
+   for (int i = 0; i < numPlayers; i++) {
+      players[i].reset();
+   }
 }
 
 
-void destroyGame(Player * players, int numPlayers, Dice * dice) {
-	for (int i = 0; i < numPlayers; i++) {
-		players[i].~Player();
-	}
-
-	dice->~Dice();
-	delete[] players;
-	delete dice;
+void destroyGame(Player * players, Dice * dice, UI * ui) {
+   delete ui;
+   delete[] players;
+   delete dice;
 }
 
 bool playerStillPlaying(Player * playerPointer) {
-   return playerPointer->isPlayerFinished();
+   return !(playerPointer->isPlayerFinished());
 }
 
 bool scoreOrReroll(Player * player, Dice * dice, UI * ui) {

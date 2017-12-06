@@ -9,7 +9,7 @@
 
 Player::Player() {
 	Player::finished = new bool;
-	*Player::finished = true;
+	*Player::finished = false;
 	Player::scoreArray = new int[15];
 	for (int i = 0; i < 15; i++) {
 		scoreArray[i] = -1;
@@ -50,7 +50,7 @@ void Player::checkFullyScored() {
 		if (Player::scoreArray[i] == -1)
 			return;
 	}
-	*Player::finished = false;
+	*Player::finished = true;
 }
 
 bool Player::isPlayerFinished() {

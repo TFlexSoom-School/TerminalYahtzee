@@ -21,6 +21,7 @@ public:
 	UI(Player *,int *, Dice *, int *);
 	~UI();
 	void start();
+	void title();
 	void updatePrint();
 	void Error(std::string);
 	int getUserInput();
