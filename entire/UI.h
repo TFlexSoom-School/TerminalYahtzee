@@ -29,6 +29,8 @@ public:
 	void end();
 	void printChart();
 	void printDice(int, int);
+	void printPlayer();
+	void printButtons();
 	std::string playerValue(int);
 	void move(int);
         int select();
