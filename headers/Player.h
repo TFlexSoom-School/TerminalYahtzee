@@ -22,6 +22,9 @@ public:
 	int getScore(int);
 	int getSum();
 	bool isPlayerFinished();
+	void checkBonuses();
+	void playerBONUS();
 	void reset();
+	void exit();
 };
 #endif

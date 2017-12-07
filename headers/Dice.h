@@ -14,7 +14,7 @@ private:
 	int * dice_array;
 	int * dice_results;
 	int * heldDice;
-	
+	int * numberOfRolls;
 	void updateResult();
 
 public:
@@ -24,7 +24,9 @@ public:
 	int getResult(int);
 	int getSum();
 	int holdDice(int);
+	int unHoldAllDice();
 	int getDice(int);
+	bool getDice_held(int);
 };
 
 #endif
