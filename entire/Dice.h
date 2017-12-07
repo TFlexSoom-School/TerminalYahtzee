@@ -25,6 +25,7 @@ public:
 	int getSum();
 	int holdDice(int);
 	int getDice(int);
+	bool getDice_held(int);
 };
 
 #endif

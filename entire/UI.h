@@ -35,4 +35,6 @@ public:
 	void move(int);
         int select();
         void highlight();	
+	void highlight_DiceWhite();
+	void highlight_blinkCurs();
 };

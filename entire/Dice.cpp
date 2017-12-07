@@ -68,3 +68,11 @@ int Dice::holdDice(int i) {
 int Dice::getDice(int index) {
 	return Dice::dice_array[index];
 }
+
+bool Dice::getDice_held(int index){
+	index = twoPow(index - 1);
+	if (((*Dice::heldDice) / index) % 2 == 1) 
+		return true;
+	else
+	   return false;
+}

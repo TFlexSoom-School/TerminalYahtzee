@@ -235,6 +235,20 @@ int UI::select(){
 }
 
 void UI::highlight(){
+   UI::highlight_DiceWhite();
+   UI::highlight_blinkCurs(); /* This command should be last */
+}
+
+void UI::highlight_DiceWhite(){
+   for(int i = 0; i < 5; i ++){
+      if(UI::dice_array -> getDice_held(i + 1)){
+         for(int j = 0; j < 4; j ++)
+	    mvwchgat(UI::wnd, 10 + j, i * 5 + 5, 5, A_REVERSE, 1, NULL);
+      }
+   }
+}
+
+void UI::highlight_blinkCurs(){
    if((*UI::selectorRow) == 0){
       if((*UI::selectorCol) != 5){
 	 for(int i = 0; i < 4; i ++){
@@ -247,9 +261,9 @@ void UI::highlight(){
       }
    }else if((*UI::selectorRow) >= 1){
       if((*UI::selectorCol) == 0){
-	 mvwchgat(UI::wnd, 20 + (*UI::selectorRow), 18, 2, A_BLINK, 1, NULL);
+	 mvwchgat(UI::wnd, 20 + (*UI::selectorRow), 18, 3, A_BLINK, 1, NULL);
       }else if((*UI::selectorCol) == 1){
-	 mvwchgat(UI::wnd, 20 + (*UI::selectorRow), 42, 2, A_BLINK, 1, NULL);
+	 mvwchgat(UI::wnd, 20 + (*UI::selectorRow), 42, 3, A_BLINK, 1, NULL);
       }
    }
 }
