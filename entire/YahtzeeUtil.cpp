@@ -33,8 +33,8 @@ int getRandomNumber(int start, int end) {
  * int_to_string(int num, int length);
  * Recursivly formats an integer num to a int lenght size of string
  * 	spaces are added to the back side
- * precondition: none;
- * postcondition: none;
+ * precondition: num > 0
+ * postcondition: none
  * returns formatted string;
  */
 std::string int_to_string(int num, int length) {

@@ -137,17 +137,19 @@ void UI::printChart() {
    mvwprintw(UI::wnd, 24, 1, "|     4s     |   %s    | 3 of a Kind  |   %s    |", UI::playerValue(3).c_str(), UI::playerValue(10).c_str());
    mvwprintw(UI::wnd, 25, 1, "|     5s     |   %s    | 4 of a Kind  |   %s    |", UI::playerValue(4).c_str(), UI::playerValue(11).c_str());
    mvwprintw(UI::wnd, 26, 1, "|     6s     |   %s    |    YAHTZEE   |   %s    |", UI::playerValue(5).c_str(), UI::playerValue(12).c_str());
-   mvwprintw(UI::wnd, 27, 1, "|   Bonus    |   %s    |Bonus Yahtzee |   %s    |", UI::playerValue(6).c_str(), UI::playerValue(13).c_str());
-   mvwprintw(UI::wnd, 28, 1, "|------------|----------|--------------|----------|");
+   mvwprintw(UI::wnd, 27, 1, "|   Bonus    |   %s    |    Chance    |   %s    |", UI::playerValue(6).c_str(), UI::playerValue(13).c_str());
+   mvwprintw(UI::wnd, 28, 1, "|------------|----------|Bonus Yahtzee |   %s    |", UI::playerValue(14).c_str());
+   mvwprintw(UI::wnd, 29, 1, "                        |--------------|----------|");
 }
 
 std::string UI::playerValue(int index) {
    int score = UI::player_array[*UI::current_turn].getScore(index);
    if (score == -1) {
       return "   ";
-   }
+   }else if (score == 0)
+      return "  0";
    else {
-      return int_to_string(score, 3);
+      return int_to_string(score, 3); /* Num has to be > 0 */
    }
 }
 
@@ -187,15 +189,26 @@ int UI::getUserInput() {
 }
 
 bool UI::playAgain() {
-   /* Print Again???? */
+   UI::updatePrint();
    int c;
-   UI::Error("Would you like to play again?");
    do{
+      UI::Error("Press Backspace to Quit");
       c = wgetch(UI::wnd);
-      if(c == KEY_BACKSPACE || c == 8);
-      return false;
-      if(c == KEY_ENTER)
+      if(c == KEY_BACKSPACE || c == 8)
+	 return false;
+      if(c == KEY_ENTER){
+	 (*UI::current_turn) = 0;
+	 (*UI::selectorRow) = 0;
 	 return true;
+      }
+      if(c == KEY_LEFT && *UI::current_turn > 0){
+	 (*UI::current_turn) --;
+	 UI::updatePrint();
+      }
+      if(c == KEY_RIGHT && *UI::current_turn < *UI::numPlayers){
+	 (*UI::current_turn) ++;
+	 UI::updatePrint();
+      }
    }while (true);
 }
 
@@ -215,7 +228,7 @@ void UI::move(int dir){
 	 }
 	 break;
       case 2: /* Down */
-	 if((*UI::selectorRow) <= 6){
+	 if((*UI::selectorRow) <= 7){
 	    (*UI::selectorRow) ++;
 	    if((*UI::selectorCol) > 1)
 	       (*UI::selectorCol) = 1;
@@ -233,17 +246,17 @@ void UI::move(int dir){
 }
 
 int UI::select(){
-  if(*UI::selectorRow  == 0){
-     if(*UI::selectorCol == 5){
-        return 0;
-     }else{
-        return 20 + (*UI::selectorCol);
-     }
-  }else if(*UI::selectorCol == 0){
-     return (*UI::selectorRow);
-  }else{
-     return (*UI::selectorRow) + 7;
-  }   
+   if(*UI::selectorRow  == 0){
+      if(*UI::selectorCol == 5){
+	 return 0;
+      }else{
+	 return 20 + (*UI::selectorCol);
+      }
+   }else if(*UI::selectorCol == 0){
+      return (*UI::selectorRow);
+   }else{
+      return (*UI::selectorRow) + 7;
+   }   
 }
 
 void UI::highlight(){
@@ -254,7 +267,7 @@ void UI::highlight(){
 void UI::highlight_DiceWhite(){
    for(int i = 0; i < 5; i ++){
       if(UI::dice_array -> getDice_held(i + 1)){
-         for(int j = 0; j < 4; j ++)
+	 for(int j = 0; j < 4; j ++)
 	    mvwchgat(UI::wnd, 10 + j, i * 5 + 5, 5, A_REVERSE, 1, NULL);
       }
    }
@@ -284,5 +297,5 @@ void UI::highlight_blinkCurs(){
 }
 
 void UI::end() {
-   /*This will be used for something... I am sure*/
+   *UI::selectorRow = -1;
 }

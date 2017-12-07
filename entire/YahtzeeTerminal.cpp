@@ -73,20 +73,22 @@ int extractInts(char str[]) {
 void Yahtzee(int numPlayers) {
    Player * players = new Player[numPlayers];
    Dice * dice = new Dice();
-   int player = 0;
+   int player;
    UI * ui = new UI(players, &numPlayers, dice, &player);
    ui->start();
 
    do {
       startNewGame(players, numPlayers);
+      player = 0;
       do {
 	 if (playerStillPlaying(&players[player]))
 	    do {
 	       dice->rollDice();
 	    } while (!scoreOrReroll(&players[player], dice, ui));
-
+	 dice -> unHoldAllDice();
 	 player += (player >= numPlayers - 1 ? -1 * player : 1);
       } while (!(allPlayersScored(players, numPlayers)));
+      ui->end();
    } while (ui->playAgain());
 
    destroyGame(players, dice, ui);
@@ -121,44 +123,57 @@ bool scoreOrReroll(Player * player, Dice * dice, UI * ui) {
 	 case 0:
 	    return false;
 	 case 1:
-	    player->score(0, dice->getResult(1));
-	    return true;
+	    if(player->score(0, dice->getResult(1)))
+	       return true;
+	    break;
 	 case 2:
-	    player->score(1, dice->getResult(2) * 2);
-	    return true;
+	    if(player->score(1, dice->getResult(2) * 2))
+	       return true;
+	    break;
 	 case 3:
-	    player->score(2, dice->getResult(3) * 3);
-	    return true;
+	    if(player->score(2, dice->getResult(3) * 3))
+	       return true;
+	    break;
 	 case 4:
-	    player->score(3, dice->getResult(4) * 4);
-	    return true;
+	    if(player->score(3, dice->getResult(4) * 4))
+	       return true;
+	    break;
 	 case 5:
-	    player->score(4, dice->getResult(5) * 5);
-	    return true;
+	    if(player->score(4, dice->getResult(5) * 5))
+	       return true;
+	    break;
 	 case 6:
-	    player->score(5, dice->getResult(6) * 6);
-	    return true;
+	    if(player->score(5, dice->getResult(6) * 6))
+	       return true;
+	    break;
 	 case 8:
-	    player->score(7, ofKind(dice, 3));
-	    return true;
+	    if(player->score(7, ofKind(dice, 3)))
+	       return true;
+	    break;
 	 case 9:
-	    player->score(8, ofKind(dice, 4));
-	    return true;
+	    if(player->score(8, ofKind(dice, 4)))
+	       return true;
+	    break;
 	 case 10:
-	    player->score(9, fullHouse(dice));
-	    return true;
+	    if(player->score(9, fullHouse(dice)))
+	       return true;
+	    break;
 	 case 11:
-	    player->score(10, smStraight(dice));
-	    return true;
+	    if(player->score(10, smStraight(dice)))
+	       return true;
+	    break;
 	 case 12:
-	    player->score(11, lgStraight(dice));
-	    return true;
+	    if(player->score(11, lgStraight(dice)))
+	       return true;
+	    break;
 	 case 13:
-	    player->score(12, diceYahtzee(dice));
-	    return true;
+	    if(player->score(12, diceYahtzee(dice)))
+	       return true;
+	    break;
 	 case 14:
-	    player->score(13, dice->getSum());
-	    return true;
+	    if(player->score(13, dice->getSum()))
+	       return true;
+	    break;
 	 case 15:
 	    if (bonusYahtzee(player, dice))
 	       return true;

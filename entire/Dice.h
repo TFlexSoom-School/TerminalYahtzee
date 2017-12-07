@@ -14,7 +14,7 @@ private:
 	int * dice_array;
 	int * dice_results;
 	int * heldDice;
-	
+	int * numberOfRolls;
 	void updateResult();
 
 public:
