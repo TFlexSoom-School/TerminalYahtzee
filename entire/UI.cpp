@@ -37,7 +37,7 @@ void UI::start() {
    keypad(UI::wnd, TRUE);
    keypad(stdscr, FALSE);
    UI::title();
-   
+
    wrefresh(UI::wnd);
 }
 
@@ -48,7 +48,7 @@ void UI::title(){
    mvwprintw(UI::wnd, 3, 1, "|_____|   |_____|  |_____|      |      ______|   |______   |______");
    mvwprintw(UI::wnd, 4, 1, "   |      |     |  |     |      |      |         |         |      ");
    mvwprintw(UI::wnd, 5, 1, "   |      |     |  |     |      |      |______   |______   |______");
-   
+
 }
 
 void UI::updatePrint() {
@@ -193,7 +193,7 @@ bool UI::playAgain() {
    do{
       c = wgetch(UI::wnd);
       if(c == KEY_BACKSPACE || c == 8);
-	 return false;
+      return false;
       if(c == KEY_ENTER)
 	 return true;
    }while (true);
@@ -210,7 +210,7 @@ void UI::move(int dir){
 	    if((*UI::selectorCol) != 1 )
 	       (*UI::selectorCol) ++;
 	 }else if((*UI::selectorRow) == 0){
-	    if((*UI::selectorCol) < 4)
+	    if((*UI::selectorCol) < 5)
 	       (*UI::selectorCol) ++;
 	 }
 	 break;
@@ -236,8 +236,14 @@ int UI::select(){
 
 void UI::highlight(){
    if((*UI::selectorRow) == 0){
-      for(int i = 0; i < 4; i ++){
-	 mvwchgat(UI::wnd, 10 + i, ((*UI::selectorCol) * 5) + 5, 5, A_BLINK, 1, NULL);
+      if((*UI::selectorCol) != 5){
+	 for(int i = 0; i < 4; i ++){
+	    mvwchgat(UI::wnd, 10 + i, ((*UI::selectorCol) * 5) + 5, 5, A_BLINK, 1, NULL);
+	 }
+      }else{
+	 for(int i = 0; i < 5; i ++){
+	    mvwchgat(UI::wnd, 9 + i, 35, 24, A_BLINK, 1, NULL);
+	 }
       }
    }else if((*UI::selectorRow) >= 1){
       if((*UI::selectorCol) == 0){
