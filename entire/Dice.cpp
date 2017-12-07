@@ -65,6 +65,12 @@ int Dice::holdDice(int i) {
 	}
 }
 
+int Dice::unHoldAllDice(){
+   int i = *Dice::heldDice;
+   *Dice::heldDice = 0;
+   return i;
+}
+
 int Dice::getDice(int index) {
 	return Dice::dice_array[index];
 }

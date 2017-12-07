@@ -130,24 +130,24 @@ void UI::printButtons(){
 }
 
 void UI::printChart() {
-   mvwprintw(UI::wnd, 20, 1, " _____________________________________________ ");
-   mvwprintw(UI::wnd, 21, 1, "|     1s     |   %s    |Small Straight|   %s    |", UI::playerValue(0).c_str(), UI::playerValue(8).c_str());
-   mvwprintw(UI::wnd, 22, 1, "|     2s     |   %s    |Large Straight|   %s    |", UI::playerValue(1).c_str(), UI::playerValue(9).c_str());
-   mvwprintw(UI::wnd, 23, 1, "|     3s     |   %s    | Full  House  |   %s    |", UI::playerValue(2).c_str(), UI::playerValue(10).c_str());
-   mvwprintw(UI::wnd, 24, 1, "|     4s     |   %s    | 3 of a Kind  |   %s    |", UI::playerValue(3).c_str(), UI::playerValue(11).c_str());
-   mvwprintw(UI::wnd, 25, 1, "|     5s     |   %s    | 4 of a Kind  |   %s    |", UI::playerValue(4).c_str(), UI::playerValue(12).c_str());
-   mvwprintw(UI::wnd, 26, 1, "|     6s     |   %s    |    YAHTZEE   |   %s    |", UI::playerValue(5).c_str(), UI::playerValue(13).c_str());
-   mvwprintw(UI::wnd, 27, 1, "|   Bonus    |   %s    |Bonus Yahtzee |   %s    |", UI::playerValue(6).c_str(), UI::playerValue(14).c_str());
-   mvwprintw(UI::wnd, 28, 1, "|------------|--------|--------------|--------|");
+   mvwprintw(UI::wnd, 20, 1, " ___________________________________________________ ");
+   mvwprintw(UI::wnd, 21, 1, "|     1s     |   %s    |Small Straight|   %s    |", UI::playerValue(0).c_str(), UI::playerValue(7).c_str());
+   mvwprintw(UI::wnd, 22, 1, "|     2s     |   %s    |Large Straight|   %s    |", UI::playerValue(1).c_str(), UI::playerValue(8).c_str());
+   mvwprintw(UI::wnd, 23, 1, "|     3s     |   %s    | Full  House  |   %s    |", UI::playerValue(2).c_str(), UI::playerValue(9).c_str());
+   mvwprintw(UI::wnd, 24, 1, "|     4s     |   %s    | 3 of a Kind  |   %s    |", UI::playerValue(3).c_str(), UI::playerValue(10).c_str());
+   mvwprintw(UI::wnd, 25, 1, "|     5s     |   %s    | 4 of a Kind  |   %s    |", UI::playerValue(4).c_str(), UI::playerValue(11).c_str());
+   mvwprintw(UI::wnd, 26, 1, "|     6s     |   %s    |    YAHTZEE   |   %s    |", UI::playerValue(5).c_str(), UI::playerValue(12).c_str());
+   mvwprintw(UI::wnd, 27, 1, "|   Bonus    |   %s    |Bonus Yahtzee |   %s    |", UI::playerValue(6).c_str(), UI::playerValue(13).c_str());
+   mvwprintw(UI::wnd, 28, 1, "|------------|----------|--------------|----------|");
 }
 
 std::string UI::playerValue(int index) {
    int score = UI::player_array[*UI::current_turn].getScore(index);
    if (score == -1) {
-      return " ";
+      return "   ";
    }
    else {
-      return int_to_string(score);
+      return int_to_string(score, 3);
    }
 }
 
@@ -215,14 +215,16 @@ void UI::move(int dir){
 	 }
 	 break;
       case 2: /* Down */
-	 if((*UI::selectorRow) < 6){
+	 if((*UI::selectorRow) <= 6){
 	    (*UI::selectorRow) ++;
 	    if((*UI::selectorCol) > 1)
+	       (*UI::selectorCol) = 1;
+	    if((*UI::selectorRow) == 7)
 	       (*UI::selectorCol) = 1;
 	 }
 	 break;
       case 3: /* Left */
-	 if((*UI::selectorCol) > 0){
+	 if((*UI::selectorCol) > 0 && (*UI::selectorRow <= 6)){
 	    (*UI::selectorCol) --;
 	 }
 	 break;
@@ -231,7 +233,17 @@ void UI::move(int dir){
 }
 
 int UI::select(){
-   return 0;   
+  if(*UI::selectorRow  == 0){
+     if(*UI::selectorCol == 5){
+        return 0;
+     }else{
+        return 20 + (*UI::selectorCol);
+     }
+  }else if(*UI::selectorCol == 0){
+     return (*UI::selectorRow);
+  }else{
+     return (*UI::selectorRow) + 7;
+  }   
 }
 
 void UI::highlight(){
@@ -252,7 +264,10 @@ void UI::highlight_blinkCurs(){
    if((*UI::selectorRow) == 0){
       if((*UI::selectorCol) != 5){
 	 for(int i = 0; i < 4; i ++){
-	    mvwchgat(UI::wnd, 10 + i, ((*UI::selectorCol) * 5) + 5, 5, A_BLINK, 1, NULL);
+	    if(UI::dice_array -> getDice_held((*UI::selectorCol) + 1))
+	       mvwchgat(UI::wnd, 10 + i, ((*UI::selectorCol) * 5) + 5, 5, A_BLINK | A_REVERSE, 1, NULL);
+	    else
+	       mvwchgat(UI::wnd, 10 + i, ((*UI::selectorCol) * 5) + 5, 5, A_BLINK, 1, NULL);
 	 }
       }else{
 	 for(int i = 0; i < 5; i ++){
@@ -263,7 +278,7 @@ void UI::highlight_blinkCurs(){
       if((*UI::selectorCol) == 0){
 	 mvwchgat(UI::wnd, 20 + (*UI::selectorRow), 18, 3, A_BLINK, 1, NULL);
       }else if((*UI::selectorCol) == 1){
-	 mvwchgat(UI::wnd, 20 + (*UI::selectorRow), 42, 3, A_BLINK, 1, NULL);
+	 mvwchgat(UI::wnd, 20 + (*UI::selectorRow), 45, 3, A_BLINK, 1, NULL);
       }
    }
 }

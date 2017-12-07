@@ -84,6 +84,7 @@ void Yahtzee(int numPlayers) {
 	    do {
 	       dice->rollDice();
 	    } while (!scoreOrReroll(&players[player], dice, ui));
+
 	 player += (player >= numPlayers - 1 ? -1 * player : 1);
       } while (!(allPlayersScored(players, numPlayers)));
    } while (ui->playAgain());
@@ -177,8 +178,6 @@ bool scoreOrReroll(Player * player, Dice * dice, UI * ui) {
 	 case 24:
 	    dice->holdDice(5);
 	    break;
-	 case 30:
-	    return false;
 	 default:
 	    ui->Error("Unknown Argument");
 	    break;
