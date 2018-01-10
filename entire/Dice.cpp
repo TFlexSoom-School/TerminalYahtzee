@@ -101,17 +101,25 @@ void Dice::updateResult() {
 }
 
 /*
- * g
- * Gets the result on the requested number rolled [1,6]
- * param: index [1,6]
- * pre: None
+ * getSum() 
+ * Returns the sum of all dice  
+ * param: none
+ * pre: dice have been rolled
  * post: None
- * return: integer value representing how many of that number has been rolled
+ * return: the integer representing the she sum of the dice.
  */
 int Dice::getSum() {
    return Dice::dice_array[0] + Dice::dice_array[1] + Dice::dice_array[2] + Dice::dice_array[3] + Dice::dice_array[4];
 }
 
+/*
+ * holdDice(int) 
+ * holds dice [1-5] or unholds it if already held 
+ * param: dice argument int index [1-5]
+ * pre: None
+ * post: the indexed dice will be held or unheld depending on the argument
+ * return: 0 if dice is unheld and 1 if the dice is now held
+ */
 int Dice::holdDice(int i) {
    i = twoPow(i - 1);
    if (((*Dice::heldDice) / i) % 2 == 1) {
@@ -124,6 +132,14 @@ int Dice::holdDice(int i) {
    }
 }
 
+/*
+ * unHoldAllDice() 
+ * A function to be used after a turn is done. It unholds all dice to get a fresh roll  
+ * param: None
+ * pre: None
+ * post: held Dice variable will return to 0
+ * return: the heldDice variable value before it was returned to 0
+ */
 int Dice::unHoldAllDice(){
    int i = *Dice::heldDice;
    *Dice::heldDice = 0;
@@ -131,10 +147,27 @@ int Dice::unHoldAllDice(){
    return i;
 }
 
+/*
+ * getDice(int) 
+ * Returns the value of the given dice [0-4]  
+ * param: none
+ * pre: dice have been rolled
+ * post: None
+ * return: the integer representing the she sum of the dice.
+ */
+
 int Dice::getDice(int index) {
    return Dice::dice_array[index];
 }
 
+/*
+ * getDice_held(int) 
+ * Returns if the given dice [1-5] is held 
+ * param: the dice index [1-5]
+ * pre: None
+ * post: None
+ * return: he integer representing the she sum of the dice.
+ */
 bool Dice::getDice_held(int index){
    index = twoPow(index - 1);
    if (((*Dice::heldDice) / index) % 2 == 1) 
