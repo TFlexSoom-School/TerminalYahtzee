@@ -5,11 +5,22 @@
   This class provides the ability to carry 5 random numbers
 */
 
+/* Header File that includes all headerfiles */
 #include "stdafx.h"
+
+/* Feel free to change the number of rolls with this macro */
 #ifndef ROLLS
 #define ROLLS 3
 #endif
 
+/* 
+ * Dice Object Constructor
+ * A Dice object contains an array of 5 integers 1-6 for dice.
+ *    contains an array of of 6 integers 1-5 as a dice counter.
+ *    contains two integers for the which dice to hold and how many rolls have been made.
+ * Post condition: Two arrays will be created on the heap all initialized to zero.
+ * 	Two integer variables will also be created.
+ */
 Dice::Dice() {
 	Dice::dice_array = new int[5];
 	Dice::dice_results = new int[6];
@@ -24,6 +35,10 @@ Dice::Dice() {
 	*Dice::numberOfRolls = 0;
 }
 
+/* 
+ * Dice Object Deconstructor
+ * Frees all memory allocated from Dice Object
+ */
 Dice::~Dice() {
 	delete[] Dice::dice_array;
 	delete[] Dice::dice_results;
@@ -31,6 +46,16 @@ Dice::~Dice() {
 	delete Dice::numberOfRolls;
 }
 
+/*
+ * rollDice()
+ * Rolls the dice array and collects results on dice object
+ * Will also increment Dice rolled. If dice rolled is > ROLLS then method will not run
+ * param: None
+ * pre: None (Preferablly dice rolled is < ROLLs)
+ * post: Based on dice held the two arrays will potentiall have new values
+ * 	similar to a roll in Yahtzee
+ * return: None
+ */
 void Dice::rollDice() {
    if(*Dice::numberOfRolls < ROLLS){
       int numCheck;
@@ -45,10 +70,27 @@ void Dice::rollDice() {
    }
 }
 
+
+/*
+ * getResult(int)
+ * Gets the result on the requested number rolled [1,6]
+ * param: index [1,6]
+ * pre: None
+ * post: None
+ * return: integer value representing how many of that number has been rolled
+ */
 int Dice::getResult(int index) {
    return Dice::dice_results[index - 1];
 }
 
+/*
+ * updateResult()
+ * private function to keep the results on track with the dice during roll
+ * param: None
+ * pre: None
+ * post: Result array will have corresponding values to dice as defined
+ * return: None
+ */
 void Dice::updateResult() {
    for (int i = 0; i < 6; i++) {
       Dice::dice_results[i] = 0;
@@ -58,6 +100,14 @@ void Dice::updateResult() {
    }
 }
 
+/*
+ * g
+ * Gets the result on the requested number rolled [1,6]
+ * param: index [1,6]
+ * pre: None
+ * post: None
+ * return: integer value representing how many of that number has been rolled
+ */
 int Dice::getSum() {
    return Dice::dice_array[0] + Dice::dice_array[1] + Dice::dice_array[2] + Dice::dice_array[3] + Dice::dice_array[4];
 }
