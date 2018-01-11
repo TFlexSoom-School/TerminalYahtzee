@@ -134,7 +134,9 @@ int Dice::holdDice(int i) {
 
 /*
  * unHoldAllDice() 
- * A function to be used after a turn is done. It unholds all dice to get a fresh roll  
+ * A function to be used after a turn is done. 
+ *    It unholds all dice to get a fresh roll
+ *    It also changes the number of rolls back to 0  
  * param: None
  * pre: None
  * post: held Dice variable will return to 0
