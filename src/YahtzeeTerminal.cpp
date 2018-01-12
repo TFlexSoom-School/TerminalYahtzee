@@ -251,6 +251,8 @@ int smStraight(Dice * dice) {
       return 30;
    else if ((dice->getResult(3) && dice->getResult(4)) && (dice->getResult(5) && dice->getResult(6)))
       return 30;
+   else
+      return 0;
 }
 
 /*
