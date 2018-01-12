@@ -1,27 +1,7 @@
 // YahtzeeTerminal.cpp : Defines the entry point for the console application.
-//
-
+//TODO If I want to keep this as a backend I may want to seperate its ties to
+// UI.h that way I could have two different compiled units.
 #include "stdafx.h"
-
-
-/* Forward Declarations */
-
-/* Function Prototypes */
-int extractInts(char[]);
-void Yahtzee(int);
-bool scoreOrReroll(Player *, Dice *, UI *);
-void startNewGame(Player *, int);
-void destroyGame(Player *, Dice *, UI *);
-bool playerStillPlaying(Player*);
-bool allPlayersScored(Player *, int);
-bool playAgain();
-int twoPow(int);
-int ofKind(Dice *, int);
-int fullHouse(Dice *);
-int smStraight(Dice *);
-int lgStraight(Dice *);
-int diceYahtzee(Dice *);
-bool bonusYahtzee(Player *, Dice *);
 
 /* Main Method */
 
