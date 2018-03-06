@@ -61,7 +61,7 @@ void Yahtzee(int numPlayers) {
       startNewGame(players, numPlayers);
       player = 0;
       do {
-	 if (playerStillPlaying(&players[player]))
+	 if (playerStillPlaying(&players[player]))i
 	    do {
 	       dice->rollDice();
 	    } while (!scoreOrReroll(&players[player], dice, ui));
@@ -75,6 +75,16 @@ void Yahtzee(int numPlayers) {
 
 }
 
+
+/*
+ * startNewGame(Player*, int)
+ * creates a new game by calling reset on each player.
+ * param: The player array along with the number of players
+ * pre: Players are preferably finished with the round of the game
+ * post: Players will now have reinitialized scores. 
+ *    Every score in each of their arrays will be -1
+ * return: None
+ */
 void startNewGame(Player * players, int numPlayers) {
    for (int i = 0; i < numPlayers; i++) {
       players[i].reset();
@@ -82,16 +92,40 @@ void startNewGame(Player * players, int numPlayers) {
 }
 
 
+/*
+ * destroyGame(Player*, Dice*, UI*)
+ * Frees memory
+ * param: All used objects including Player Array, Dice Pointer and UI Pointer
+ * pre: None
+ * post: Memory will be freed
+ * return: None
+ */
 void destroyGame(Player * players, Dice * dice, UI * ui) {
    delete ui;
    delete[] players;
    delete dice;
 }
 
+/*
+ * playerStillPlaying(Player*)
+ * Checks if the player which the argument points to is finished
+ * param: index of the desired score
+ * pre: index is [0,14]
+ * post: none
+ * return: the score at the index
+ */
 bool playerStillPlaying(Player * playerPointer) {
    return !(playerPointer->isPlayerFinished());
 }
 
+/*
+ * getScore(int)
+ * returns the given score at the index
+ * param: index of the desired score
+ * pre: index is [0,14]
+ * post: none
+ * return: the score at the index
+ */
 bool scoreOrReroll(Player * player, Dice * dice, UI * ui) {
    do {
       ui->updatePrint();
