@@ -4,7 +4,7 @@
   The class source code for the player piecie
   This will hold the scoring on a per player basis.
 */
-#include "stdafx.h"
+#include "Player.hpp"
 
 
 /*
@@ -14,9 +14,9 @@
  * 	Every score within the chart is initialized to -1
  */
 Player::Player() {
-   Player::finished = new bool;
-   *Player::finished = false;
-   Player::scoreArray = new int[15];
+   this->finished = new bool;
+   *this->finished = false;
+   this->scoreArray = new int[15];
    for (int i = 0; i < 15; i++) {
       scoreArray[i] = -1;
    }
@@ -27,8 +27,8 @@ Player::Player() {
  * Frees up memory that was put on the heap.
  */
 Player::~Player() {
-   delete Player::finished;
-   delete[] Player::scoreArray;
+   delete this->finished;
+   delete[] this->scoreArray;
 }
 
 /*
@@ -41,10 +41,10 @@ Player::~Player() {
  * return: if a new score added return true otherwise return false
  */
 bool Player::score(int index, int score) {
-   if (Player::scoreArray[index] == -1) {
-      Player::scoreArray[index] = score;
-      Player::checkFullyScored();
-      Player::checkBonuses();
+   if (this->scoreArray[index] == -1) {
+      this->scoreArray[index] = score;
+      this->checkFullyScored();
+      this->checkBonuses();
       return true;
    }
    return false;
@@ -59,7 +59,7 @@ bool Player::score(int index, int score) {
  * return: the score at the index
  */
 int Player::getScore(int index) {
-   return Player::scoreArray[index];
+   return this->scoreArray[index];
 }
 
 /*
@@ -74,7 +74,7 @@ int Player::getSum() {
    int returnValue = 0;
    int iterator = 0;
    for (int i = 0; i < 15; i++) {
-      iterator = Player::scoreArray[i];
+      iterator = this->scoreArray[i];
       if (iterator != -1) {
 	 returnValue += iterator;
       }
@@ -92,10 +92,10 @@ int Player::getSum() {
  */
 void Player::checkFullyScored() {
    for (int i = 0; i < 14; i++) { /* Everything but Bonus Yahtzee */
-      if (Player::scoreArray[i] == -1)
+      if (this->scoreArray[i] == -1)
 	 return;
    }
-   *Player::finished = true;
+   *this->finished = true;
 }
 
 
@@ -108,7 +108,7 @@ void Player::checkFullyScored() {
  * return the boolean value representing the player's finish state
  */
 bool Player::isPlayerFinished() {
-   return *Player::finished;
+   return *this->finished;
 }
 
 /*
@@ -121,11 +121,11 @@ bool Player::isPlayerFinished() {
  * return None
  */
 void Player::checkBonuses(){
-   if(Player::scoreArray[6] == -1){
-      Player::playerBONUS();
+   if(this->scoreArray[6] == -1){
+      this->playerBONUS();
    }
-   if(Player::scoreArray[12] == 0){
-      Player::scoreArray[14] = 0; 
+   if(this->scoreArray[12] == 0){
+      this->scoreArray[14] = 0; 
    }
 }
 
@@ -142,15 +142,15 @@ void Player::checkBonuses(){
 void Player::playerBONUS(){ 
    int running = 0;
    for(int i = 0; i < 6; i ++){
-      if(Player::scoreArray[i] == -1){
+      if(this->scoreArray[i] == -1){
 	 running = -1;
 	 break;
       }else{
-	 running += Player::scoreArray[i];
+	 running += this->scoreArray[i];
       }
    }
    if(running != -1){
-      Player::scoreArray[6] = running >= 63 ? 35 : 0;
+      this->scoreArray[6] = running >= 63 ? 35 : 0;
    }
 }
 
@@ -164,7 +164,7 @@ void Player::playerBONUS(){
  */
 void Player::reset() {
    for (int i = 0; i < 15; i++) {
-      Player::scoreArray[i] = -1;
+      this->scoreArray[i] = -1;
    }
 }
 
@@ -179,7 +179,7 @@ void Player::reset() {
  */
 void Player::exit(){
    for(int i = 0; i < 15; i ++){
-      Player::scoreArray[i] = 0;
-      *Player::finished = true;
+      this->scoreArray[i] = 0;
+      *this->finished = true;
    }
 }

@@ -3,9 +3,12 @@
   11/21/17
   UI for Yahtzee using Curses
 */
-#pragma once
-#include "stdafx.h"
-
+#ifndef __UI_HPP
+#define __UI_HPP
+#include "Player.hpp"
+#include "Dice.hpp"
+#include <ncurses.h>
+#include <string>
 
 class UI {
 private:
@@ -38,3 +41,4 @@ public:
 	void highlight_DiceWhite();
 	void highlight_blinkCurs();
 };
+#endif

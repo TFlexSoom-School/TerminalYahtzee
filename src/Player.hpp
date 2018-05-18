@@ -5,8 +5,8 @@
   Should be turned into an object
 */
 
-#ifndef PlayerClass
-#define PlayerClass
+#ifndef __PLAYER_HPP
+#define __PLAYER_HPP
 /*
  * A Player represents a singular player with 15 score slots
  *    This game is meant to be Yahtzee

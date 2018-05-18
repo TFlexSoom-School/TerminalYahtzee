@@ -1,7 +1,30 @@
 // YahtzeeTerminal.cpp : Defines the entry point for the console application.
-//TODO If I want to keep this as a backend I may want to seperate its ties to
-// UI.h that way I could have two different compiled units.
-#include "stdafx.h"
+//
+
+#include <iostream>
+#include <cstdlib>
+#include <cstring>
+#include "Player.hpp"
+#include "Dice.hpp"
+#include "UI.hpp"
+
+
+/* Function Prototypes */
+int extractInts(char[]);
+void Yahtzee(int);
+bool scoreOrReroll(Player *, Dice *, UI *);
+void startNewGame(Player *, int);
+void destroyGame(Player *, Dice *, UI *);
+bool playerStillPlaying(Player*);
+bool allPlayersScored(Player *, int);
+bool playAgain();
+int twoPow(int);
+int ofKind(Dice *, int);
+int fullHouse(Dice *);
+int smStraight(Dice *);
+int lgStraight(Dice *);
+int diceYahtzee(Dice *);
+bool bonusYahtzee(Player *, Dice *);
 
 /* Main Method */
 
@@ -61,7 +84,7 @@ void Yahtzee(int numPlayers) {
       startNewGame(players, numPlayers);
       player = 0;
       do {
-	 if (playerStillPlaying(&players[player]))i
+	 if (playerStillPlaying(&players[player]))
 	    do {
 	       dice->rollDice();
 	    } while (!scoreOrReroll(&players[player], dice, ui));
@@ -75,16 +98,6 @@ void Yahtzee(int numPlayers) {
 
 }
 
-
-/*
- * startNewGame(Player*, int)
- * creates a new game by calling reset on each player.
- * param: The player array along with the number of players
- * pre: Players are preferably finished with the round of the game
- * post: Players will now have reinitialized scores. 
- *    Every score in each of their arrays will be -1
- * return: None
- */
 void startNewGame(Player * players, int numPlayers) {
    for (int i = 0; i < numPlayers; i++) {
       players[i].reset();
@@ -92,40 +105,16 @@ void startNewGame(Player * players, int numPlayers) {
 }
 
 
-/*
- * destroyGame(Player*, Dice*, UI*)
- * Frees memory
- * param: All used objects including Player Array, Dice Pointer and UI Pointer
- * pre: None
- * post: Memory will be freed
- * return: None
- */
 void destroyGame(Player * players, Dice * dice, UI * ui) {
    delete ui;
    delete[] players;
    delete dice;
 }
 
-/*
- * playerStillPlaying(Player*)
- * Checks if the player which the argument points to is finished
- * param: index of the desired score
- * pre: index is [0,14]
- * post: none
- * return: the score at the index
- */
 bool playerStillPlaying(Player * playerPointer) {
    return !(playerPointer->isPlayerFinished());
 }
 
-/*
- * getScore(int)
- * returns the given score at the index
- * param: index of the desired score
- * pre: index is [0,14]
- * post: none
- * return: the score at the index
- */
 bool scoreOrReroll(Player * player, Dice * dice, UI * ui) {
    do {
       ui->updatePrint();
@@ -265,8 +254,6 @@ int smStraight(Dice * dice) {
       return 30;
    else if ((dice->getResult(3) && dice->getResult(4)) && (dice->getResult(5) && dice->getResult(6)))
       return 30;
-   else
-      return 0;
 }
 
 /*
