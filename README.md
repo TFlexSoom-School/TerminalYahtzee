@@ -27,7 +27,7 @@ No it is not.
 
 # Purpose of this project
 A simple practice of C++ programming with the NCurses Environment. I highly recommend
-individuals check out my ESCAPE CS 162 repository.s
+individuals check out my ESCAPE CS 162 repository.
 
 # How to include this project
 All files under src are valid to use across other projects except TerminalYahtzee.cpp
