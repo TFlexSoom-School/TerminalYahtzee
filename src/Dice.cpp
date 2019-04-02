@@ -29,9 +29,9 @@ Dice::Dice() {
 	}
 	this->dice_results[5] = 0;
 	this->heldDice = new int;
-	*this->heldDice = 0;
+	(*this->heldDice) = 0;
 	this->numberOfRolls = new int;
-	*this->numberOfRolls = 0;
+	(*this->numberOfRolls) = 0;
 }
 
 /* 
@@ -65,7 +65,7 @@ void Dice::rollDice() {
 	 }
       }
       this->updateResult();
-      *this->numberOfRolls ++;
+      (*this->numberOfRolls) ++;
    }
 }
 
